@@ -123,9 +123,24 @@ public class SCIFIOITKBridge {
   private boolean executeCommand(String [] args) throws IOException {
     boolean success = false;
     
+    
+    String series = "0";
+    String id = "";
+    String[] idTokens = null;
+    
+    if (args.length > 1) {
+      idTokens = args[1].split("@");
+      id = idTokens[0];
+
+      if (idTokens.length == 3) {
+        id += idTokens[2];
+        series = idTokens[1];
+      }
+    }
+    
     try {
       if(args[0].equals("info")) {
-        success = readImageInfo(args[1]);
+        success = readImageInfo(id, series);
         endCommand();
       }
       else if(args[0].equals("read")) {
@@ -139,15 +154,15 @@ public class SCIFIOITKBridge {
         int tEnd =   Integer.parseInt( args[9] ) + tBegin - 1;
         int cBegin = Integer.parseInt( args[10] );
         int cEnd =   Integer.parseInt( args[11] ) + cBegin - 1;
-        success = read(args[1], xBegin, xEnd, yBegin, yEnd, zBegin, zEnd, tBegin,
+        success = read(id, series, xBegin, xEnd, yBegin, yEnd, zBegin, zEnd, tBegin,
             tEnd, cBegin, cEnd);
       }
       else if(args[0].equals("canRead")) {
-        success = canRead(args[1]);
+        success = canRead(id);
         endCommand();
       }
       else if(args[0].equals("canWrite")) {
-        success = canWrite(args[1]);
+        success = canWrite(id);
         endCommand();
       }
       else if(args[0].equals("waitForInput")) {
@@ -184,7 +199,7 @@ public class SCIFIOITKBridge {
         if(useCM == 1)
           cm = buildColorModel(args, byteOrder);
 
-        success = write(args[1], cm, byteOrder, dims, dimx, dimy, dimz, dimt,
+        success = write(id, series, cm, byteOrder, dims, dimx, dimy, dimz, dimt,
             dimc, pSizeX, pSizeY, pSizeZ, pSizeT, pSizeC, pixelType, rgbCCount,
             xStart, yStart, zStart, tStart, cStart, xCount, yCount, zCount, tCount,
             cCount);
@@ -211,11 +226,14 @@ public class SCIFIOITKBridge {
    *   initialized reader (beginning with "hash:") as given by a call to "info"
    *   earlier.
    */
-  public boolean readImageInfo(String filePath)
+  public boolean readImageInfo(String filePath, String series)
     throws FormatException, IOException
   {
     createReader(filePath);
 
+    int oldSeries = reader.getSeries();
+    if (!series.equalsIgnoreCase("all")) reader.setSeries(Integer.parseInt(series));
+    
     final MetadataStore store = reader.getMetadataStore();
     IMetadata meta = (IMetadata) store;
     
@@ -310,6 +328,8 @@ public class SCIFIOITKBridge {
     
     System.err.println("I am done reading image information in java");
     
+    reader.setSeries(oldSeries);
+    
     return true;
   }
 
@@ -323,7 +343,7 @@ public class SCIFIOITKBridge {
    *   second time with a fresh reader object. Regardless, after reading the
    *   file, the reader closes the file handle, and invalidates its hash token.
    */
-  public boolean read(String filePath,
+  public boolean read(String filePath, String series,
        int xBegin, int xEnd,
        int yBegin, int yEnd,
        int zBegin, int zEnd,
@@ -333,6 +353,9 @@ public class SCIFIOITKBridge {
   {
     createReader(filePath);
 
+    int oldSeries = reader.getSeries();
+    if (!series.equalsIgnoreCase("all")) reader.setSeries(Integer.parseInt(series));
+    
     int rgbChannelCount = reader.getRGBChannelCount();
     int bpp = FormatTools.getBytesPerPixel( reader.getPixelType() );
     int xCount = reader.getSizeX();
@@ -385,13 +408,16 @@ public class SCIFIOITKBridge {
         }
       }
     out.flush();
+    
+    reader.setSeries(oldSeries);
+    
     return true;
   }
   
   /**
    * 
    */
-  public boolean write ( String fileName, ColorModel cm, int byteOrder, int dims,
+  public boolean write ( String fileName, String series, ColorModel cm, int byteOrder, int dims,
 		  int dimx, int dimy, int dimz, int dimt, int dimc, double pSizeX,
 		  double pSizeY, double pSizeZ, double pSizeT, double pSizeC,
 		  int pixelType, int rgbCCount, int xStart, int yStart,
@@ -404,6 +430,9 @@ public class SCIFIOITKBridge {
 	  meta.setPixelsID("Pixels:0", 0);
 	  meta.setPixelsDimensionOrder(DimensionOrder.XYZTC, 0);
 
+    int oldSeries = reader.getSeries();
+    if (!series.equalsIgnoreCase("all")) reader.setSeries(Integer.parseInt(series));
+    
 	  try {
 		  meta.setPixelsType(PixelType.fromString(FormatTools.getPixelTypeString(pixelType)), 0);
 
@@ -489,6 +518,9 @@ public class SCIFIOITKBridge {
 	    writer.close();
 	  
 	  printAndFlush(System.out, "Done writing image: " + fileName + "\n");
+	  
+    reader.setSeries(oldSeries);
+	  
 	  return true;
   }
 
