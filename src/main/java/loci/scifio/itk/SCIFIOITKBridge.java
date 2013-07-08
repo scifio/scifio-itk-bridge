@@ -124,7 +124,7 @@ public class SCIFIOITKBridge {
     boolean success = false;
     
     
-    String series = "0";
+    String series = reader == null ? "0" : Integer.toString(reader.getSeries());
     String id = "";
     String[] idTokens = null;
     
