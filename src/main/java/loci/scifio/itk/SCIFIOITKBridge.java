@@ -613,7 +613,7 @@ public class SCIFIOITKBridge {
   }
 
   private void endCommand() throws IOException {
-    printAndFlush(System.out, "\n");
+    printAndFlush(System.out, "\n\n");
   }
   
   private ColorModel buildColorModel(String[] args, int byteOrder) throws IOException {
