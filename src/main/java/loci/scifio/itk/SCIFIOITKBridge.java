@@ -143,6 +143,10 @@ public class SCIFIOITKBridge {
         success = readImageInfo(id, series);
         endCommand();
       }
+      else if (args[0].equals("series")) {
+        success = setSeries(args[1]);
+        endCommand();
+      }
       else if(args[0].equals("read")) {
         int xBegin = Integer.parseInt( args[2] );
         int xEnd =   Integer.parseInt( args[3] ) + xBegin - 1;
@@ -215,6 +219,26 @@ public class SCIFIOITKBridge {
     }
     
     return success;
+  }
+  
+  /**
+   * Sets the series of the current reader.
+   * 
+   * @param series Series index within the current dataset
+   * @return False if the current reader is null.
+   */
+  public boolean setSeries(String series) throws IOException {
+    int newSeries = Integer.parseInt(series);
+    if (reader != null && newSeries < reader.getSeriesCount()) {
+      reader.setSeries(newSeries);
+
+      printAndFlush(System.out, "Set series " + series);
+    }
+    else {
+      printAndFlush(System.out, "Reader null. Did not set series: " + series);
+    }
+    
+    return true;
   }
 
   /**
