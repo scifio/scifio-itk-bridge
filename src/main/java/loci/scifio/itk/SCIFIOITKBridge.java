@@ -203,7 +203,7 @@ public class SCIFIOITKBridge {
         if(useCM == 1)
           cm = buildColorModel(args, byteOrder);
 
-        success = write(id, series, cm, byteOrder, dims, dimx, dimy, dimz, dimt,
+        success = write(id, cm, byteOrder, dims, dimx, dimy, dimz, dimt,
             dimc, pSizeX, pSizeY, pSizeZ, pSizeT, pSizeC, pixelType, rgbCCount,
             xStart, yStart, zStart, tStart, cStart, xCount, yCount, zCount, tCount,
             cCount);
@@ -444,7 +444,7 @@ public class SCIFIOITKBridge {
   /**
    * 
    */
-  public boolean write ( String fileName, String series, ColorModel cm, int byteOrder, int dims,
+  public boolean write ( String fileName, ColorModel cm, int byteOrder, int dims,
 		  int dimx, int dimy, int dimz, int dimt, int dimc, double pSizeX,
 		  double pSizeY, double pSizeZ, double pSizeT, double pSizeC,
 		  int pixelType, int rgbCCount, int xStart, int yStart,
@@ -456,9 +456,6 @@ public class SCIFIOITKBridge {
 	  meta.setImageID("Image:0", 0);
 	  meta.setPixelsID("Pixels:0", 0);
 	  meta.setPixelsDimensionOrder(DimensionOrder.XYZTC, 0);
-
-    int oldSeries = reader.getSeries();
-    if (!series.equalsIgnoreCase("all")) reader.setSeries(Integer.parseInt(series));
     
 	  try {
 		  meta.setPixelsType(PixelType.fromString(FormatTools.getPixelTypeString(pixelType)), 0);
@@ -545,8 +542,6 @@ public class SCIFIOITKBridge {
 	    writer.close();
 	  
 	  printAndFlush(System.out, "Done writing image: " + fileName + "\n");
-	  
-    reader.setSeries(oldSeries);
 	  
 	  return true;
   }
