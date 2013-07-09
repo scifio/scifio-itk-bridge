@@ -229,13 +229,16 @@ public class SCIFIOITKBridge {
    */
   public boolean setSeries(String series) throws IOException {
     int newSeries = Integer.parseInt(series);
-    if (reader != null && newSeries < reader.getSeriesCount()) {
+    if (reader != null) {
+      printAndFlush(System.out, "Reader null. Could not set series.");
+    }
+    else if ( newSeries >= reader.getSeriesCount()) {
+      printAndFlush(System.out, "Series index: " + newSeries + " out of bounds: " + reader.getSeriesCount());
+    }
+    else {
       reader.setSeries(newSeries);
 
       printAndFlush(System.out, "Set series " + series);
-    }
-    else {
-      printAndFlush(System.out, "Reader null. Did not set series: " + series);
     }
     
     return true;
