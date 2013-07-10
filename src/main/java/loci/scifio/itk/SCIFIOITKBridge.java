@@ -486,7 +486,7 @@ public class SCIFIOITKBridge {
     meta.setPixelsPhysicalSizeZ(new PositiveFloat(new Double(pSizeZ * 1000)), 0);
     meta.setPixelsTimeIncrement(new Double(pSizeT), 0);
 
-    for(int i = 0; i < dimc / rgbCCount; i++) {
+    for(int i = 0; i < rgbCCount; i++) {
       meta.setChannelID("Channel:0:" + i, 0, i);
       meta.setChannelSamplesPerPixel(new PositiveInteger(new Integer(rgbCCount)), 0, i);
     }
