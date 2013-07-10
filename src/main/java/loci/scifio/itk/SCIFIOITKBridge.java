@@ -46,10 +46,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.HashMap;
 
 import loci.common.Constants;
 import loci.formats.FormatException;
@@ -62,12 +62,6 @@ import loci.formats.MetadataTools;
 import loci.formats.gui.Index16ColorModel;
 import loci.formats.meta.IMetadata;
 import loci.formats.meta.MetadataStore;
-
-import ome.xml.model.enums.DimensionOrder;
-import ome.xml.model.enums.PixelType;
-import ome.xml.model.primitives.PositiveInteger;
-import ome.xml.model.primitives.PositiveFloat;
-import ome.xml.model.enums.EnumerationException;
 /**
  * SCIFIOITKBridge is a Java console application that listens for "commands"
  * on stdin and issues results on stdout. It is used by the pipes version of
@@ -456,40 +450,10 @@ public class SCIFIOITKBridge {
 		  int zStart, int tStart, int cStart, int xCount, int yCount,
 		  int zCount, int tCount, int cCount) throws IOException, FormatException
   {
-	  IMetadata meta = MetadataTools.createOMEXMLMetadata();
-	  meta.createRoot();
-	  meta.setImageID("Image:0", 0);
-	  meta.setPixelsID("Pixels:0", 0);
-	  meta.setPixelsDimensionOrder(DimensionOrder.XYZTC, 0);
     
-	  try {
-		  meta.setPixelsType(PixelType.fromString(FormatTools.getPixelTypeString(pixelType)), 0);
-
-	  } catch (EnumerationException e) {
-		  throw new IOException(e.getMessage());
-	  }
-	  
-	  if(byteOrder == 0)
-		  meta.setPixelsBinDataBigEndian(new Boolean("false"), 0, 0);
-	  else
-		  meta.setPixelsBinDataBigEndian(new Boolean("true"), 0, 0);
-	  
-	  meta.setPixelsSizeX(new PositiveInteger(new Integer(dimx)), 0);
-	  meta.setPixelsSizeY(new PositiveInteger(new Integer(dimy)), 0);
-	  meta.setPixelsSizeZ(new PositiveInteger(new Integer(dimz)), 0);
-	  meta.setPixelsSizeC(new PositiveInteger(new Integer(dimc)), 0);
-	  meta.setPixelsSizeT(new PositiveInteger(new Integer(dimt)), 0);
-	  
-	  // Note: ITK spacing is in mm.  Bio-Formats is in um.
-    meta.setPixelsPhysicalSizeX(new PositiveFloat(new Double(pSizeX * 1000)), 0);
-    meta.setPixelsPhysicalSizeY(new PositiveFloat(new Double(pSizeY * 1000)), 0);
-    meta.setPixelsPhysicalSizeZ(new PositiveFloat(new Double(pSizeZ * 1000)), 0);
-    meta.setPixelsTimeIncrement(new Double(pSizeT), 0);
-
-    for(int i = 0; i < rgbCCount; i++) {
-      meta.setChannelID("Channel:0:" + i, 0, i);
-      meta.setChannelSamplesPerPixel(new PositiveInteger(new Integer(rgbCCount)), 0, i);
-    }
+	  IMetadata meta = MetadataTools.createOMEXMLMetadata();
+    MetadataTools.populateMetadata(meta, 0, fileName, byteOrder == 0, "XYZTC",
+        FormatTools.getPixelTypeString(pixelType), dimx, dimy, dimz, dimc * rgbCCount, dimt, rgbCCount);
 	  
 	  writer = new ImageWriter();
 	  writer.setMetadataRetrieve(meta);
@@ -506,7 +470,7 @@ public class SCIFIOITKBridge {
 
 	  int bpp = FormatTools.getBytesPerPixel(pixelType);
 	  
-	  int bytesPerPlane = xCount * yCount * bpp * rgbCCount;
+	  int bytesPerPlane = (xCount - xStart) * (yCount - yStart) * bpp * rgbCCount;
 	  
 	  int numIters = (cCount - cStart) * (tCount - tStart) * (zCount - zStart);
 	  
@@ -530,8 +494,11 @@ public class SCIFIOITKBridge {
 					  int read = linein.read(buf, bytesRead, (bytesPerPlane - bytesRead));
 					  bytesRead += (read > 0) ? read : 0;
 					  // notify native code that more bytes can be read
-					  printAndFlush(System.out, "Bytes read: " + bytesRead + ". Plane no: " + no + ". Ready for more bytes.\n");
+					  printAndFlush(System.out, "Bytes read: " + bytesRead + ". Ready for more bytes.\n");
 				  }
+				  
+				  // notify native code that the buffer is full
+				  printAndFlush(System.out, "Done filling buffer. Writing plane: " + no + "\n");
 				  
 				  writer.saveBytes(no, buf, xStart, yStart, xCount, yCount);
 				  // notify native code that a plane has been saved
@@ -541,11 +508,10 @@ public class SCIFIOITKBridge {
 		  }
 	  }
 	  
-	  if(in != null)
-	    in.close();
 	  if(writer != null)
 	    writer.close();
 	  
+	  // notify native code the image is complete
 	  printAndFlush(System.out, "Done writing image: " + fileName + "\n");
 	  
 	  return true;
