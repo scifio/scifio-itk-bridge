@@ -214,7 +214,12 @@ public class SCIFIOITKBridge {
         throw new Exception("Error: unknown command: " + args[0]);
       }
     } catch (Throwable e) {
-      printAndFlush(System.err, "Caught exception:\n" + e);
+      String stackError = "Caught exception:\n" + e + "\nStack trace:\n";
+      
+      for (StackTraceElement ste : e.getStackTrace())
+        stackError += ste.toString() + "\n";
+      
+      printAndFlush(System.err, stackError);
       success = false;
     }
     
