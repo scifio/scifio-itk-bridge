@@ -229,7 +229,7 @@ public class SCIFIOITKBridge {
    */
   public boolean setSeries(String series) throws IOException {
     int newSeries = Integer.parseInt(series);
-    if (reader != null) {
+    if (reader == null) {
       printAndFlush(System.out, "Reader null. Could not set series.");
     }
     else if ( newSeries >= reader.getSeriesCount()) {
