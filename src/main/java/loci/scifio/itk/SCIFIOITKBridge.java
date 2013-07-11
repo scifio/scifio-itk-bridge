@@ -517,11 +517,8 @@ public class SCIFIOITKBridge {
 					  int read = linein.read(buf, bytesRead, (bytesPerPlane - bytesRead));
 					  bytesRead += (read > 0) ? read : 0;
 					  // notify native code that more bytes can be read
-					  printAndFlush(System.out, "Bytes read: " + bytesRead + ". Ready for more bytes.\n");
+					  printAndFlush(System.out, "Bytes read: " + bytesRead + ". " + (bytesRead < bytesPerPlane ? "Ready for more bytes" : "Done reading bytes") + ".\n");
 				  }
-				  
-				  // notify native code that the buffer is full
-				  printAndFlush(System.out, "Done filling buffer. Writing plane: " + no + "\n");
 				  
 				  writer.saveBytes(no, buf, xStart, yStart, xCount, yCount);
 				  // notify native code that a plane has been saved
@@ -629,7 +626,7 @@ public class SCIFIOITKBridge {
   }
 
   private void endCommand() throws IOException {
-    printAndFlush(System.out, "\n\n");
+    printAndFlush(System.out, "\n");
   }
   
   private ColorModel buildColorModel(String[] args, int byteOrder) throws IOException {
