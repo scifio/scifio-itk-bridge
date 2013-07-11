@@ -479,6 +479,9 @@ public class SCIFIOITKBridge {
 	  writer.setMetadataRetrieve(meta);
 	  writer.setId(fileName);
 	  
+	  // Assume the data was stored as itk::RGBPixels and is thus interleaved
+	  if (rgbCCount > 1) writer.setInterleaved(true);
+	  
 	  // build color model
 	  if(cm != null) {
 	    printAndFlush(System.err, "Using color model...");
