@@ -135,15 +135,12 @@ public class SCIFIOITKBridge {
     try {
       if(args[0].equals("info")) {
         success = readImageInfo(id, series);
-        endCommand();
       }
       else if (args[0].equals("series")) {
         success = setSeries(args[1]);
-        endCommand();
       }
       else if (args[0].equals("seriesCount")) {
         success = getSeriesCount();
-        endCommand();
       }
       else if(args[0].equals("read")) {
         int xBegin = Integer.parseInt( args[2] );
@@ -161,11 +158,9 @@ public class SCIFIOITKBridge {
       }
       else if(args[0].equals("canRead")) {
         success = canRead(id);
-        endCommand();
       }
       else if(args[0].equals("canWrite")) {
         success = canWrite(id);
-        endCommand();
       }
       else if(args[0].equals("waitForInput")) {
         success = waitForInput();
@@ -205,8 +200,6 @@ public class SCIFIOITKBridge {
             dimc, pSizeX, pSizeY, pSizeZ, pSizeT, pSizeC, pixelType, rgbCCount,
             xStart, yStart, zStart, tStart, cStart, xCount, yCount, zCount, tCount,
             cCount);
-        
-        endCommand();
       }
       else {
         throw new Exception("Error: unknown command: " + args[0]);
@@ -240,15 +233,15 @@ public class SCIFIOITKBridge {
   public boolean setSeries(String series) throws IOException {
     int newSeries = Integer.parseInt(series);
     if (reader == null) {
-      printAndFlush(System.out, "Reader null. Could not set series.");
+      printAndFlush(System.out, "Reader null. Could not set series.\n");
     }
     else if ( newSeries >= reader.getSeriesCount()) {
-      printAndFlush(System.out, "Series index: " + newSeries + " out of bounds: " + reader.getSeriesCount());
+      printAndFlush(System.out, "Series index: " + newSeries + " out of bounds: " + reader.getSeriesCount() + "\n");
     }
     else {
       reader.setSeries(newSeries);
 
-      printAndFlush(System.out, "Set series " + series);
+      printAndFlush(System.out, "Set series " + series + "\n");
     }
     
     return true;
@@ -262,10 +255,10 @@ public class SCIFIOITKBridge {
    */
   public boolean getSeriesCount() throws IOException {
     if (reader == null) {
-      printAndFlush(System.out, "Reader null. Could not get series.");
+      printAndFlush(System.out, "Reader null. Could not get series.\n");
     }
     else {
-      printAndFlush(System.out, Integer.toString(reader.getSeriesCount()));
+      printAndFlush(System.out, Integer.toString(reader.getSeriesCount()) + "\n");
     }
     
     return true;
@@ -349,7 +342,7 @@ public class SCIFIOITKBridge {
     boolean use8 = reader.get8BitLookupTable() != null;
     
     if(use16 || use8) {
-      printAndFlush(System.err, "Saving color model...");
+      printAndFlush(System.err, "Saving color model...\n");
       
       sendData("UseLUT", String.valueOf(true));
       sendData("LUTBits", String.valueOf(use8 ? 8 : 16));
@@ -381,6 +374,7 @@ public class SCIFIOITKBridge {
       sendData("UseLUT", String.valueOf(false));
     
     System.err.println("I am done reading image information in java");
+    printAndFlush(System.out, "\n");
     
     reader.setSeries(oldSeries);
     
@@ -491,12 +485,12 @@ public class SCIFIOITKBridge {
 	  
 	  // build color model
 	  if(cm != null) {
-	    printAndFlush(System.err, "Using color model...");
+	    printAndFlush(System.err, "Using color model...\n");
 	    writer.setColorModel(cm);
 	  }
 	  
 	 // maybe this isn't enough... 
-	  printAndFlush(System.err, "Using writer for format: " + writer.getFormat());
+	  printAndFlush(System.err, "Using writer for format: " + writer.getFormat() + "n");
 
 	  int bpp = FormatTools.getBytesPerPixel(pixelType);
 	  
@@ -550,7 +544,7 @@ public class SCIFIOITKBridge {
   {
     createReader(null);
     final boolean canRead = reader.isThisType(filePath);
-    printAndFlush(System.out, String.valueOf(canRead));
+    printAndFlush(System.out, String.valueOf(canRead) + "\n");
     return true;
   }
   
@@ -560,7 +554,7 @@ public class SCIFIOITKBridge {
   {
     writer = new ImageWriter();
     final boolean canWrite = writer.isThisType(filePath);
-    printAndFlush(System.out, String.valueOf(canWrite));
+    printAndFlush(System.out, String.valueOf(canWrite) + "\n");
     return true;
   }
 
@@ -632,10 +626,6 @@ public class SCIFIOITKBridge {
     printAndFlush(System.out, key + value);
   }
 
-  private void endCommand() throws IOException {
-    printAndFlush(System.out, "\n");
-  }
-  
   private ColorModel buildColorModel(String[] args, int byteOrder) throws IOException {
     int lutBits = Integer.parseInt(args[27]);
     int lutLength = Integer.parseInt(args[28]);
