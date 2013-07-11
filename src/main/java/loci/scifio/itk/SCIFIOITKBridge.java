@@ -102,8 +102,9 @@ public class SCIFIOITKBridge {
    * <li>read</li> - Dumps image pixels
    * <li>canRead</li> - Tests whether the given file path can be parsed
    * </ul>
+   * @throws FormatException 
    */
-  public boolean executeCommand(String commandLine) throws IOException
+  public boolean executeCommand(String commandLine) throws IOException, FormatException
   {
     String[] args = commandLine.split("\t");
     
@@ -114,9 +115,8 @@ public class SCIFIOITKBridge {
     return executeCommand(args);
   }
   
-  private boolean executeCommand(String [] args) throws IOException {
+  private boolean executeCommand(String [] args) throws FormatException, IOException {
     boolean success = false;
-    
     
     String series = reader == null ? "0" : Integer.toString(reader.getSeries());
     String id = "";
@@ -219,6 +219,13 @@ public class SCIFIOITKBridge {
       
       printAndFlush(System.err, stackError);
       success = false;
+    }
+    
+    if (!success) 
+    {
+      String command = "";
+      for (String s : args) command += (s + "\t");
+      printAndFlush(System.err, "Command failure:\n" + command + "\n");
     }
     
     return success;
