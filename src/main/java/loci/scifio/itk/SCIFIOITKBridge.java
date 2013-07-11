@@ -141,6 +141,10 @@ public class SCIFIOITKBridge {
         success = setSeries(args[1]);
         endCommand();
       }
+      else if (args[0].equals("seriesCount")) {
+        success = getSeriesCount();
+        endCommand();
+      }
       else if(args[0].equals("read")) {
         int xBegin = Integer.parseInt( args[2] );
         int xEnd =   Integer.parseInt( args[3] ) + xBegin - 1;
@@ -243,6 +247,23 @@ public class SCIFIOITKBridge {
     return true;
   }
 
+  /**
+   * Pipes the series count of the current reader.
+   * 
+   * @param series Series index within the current dataset
+   * @return False if the current reader is null.
+   */
+  public boolean getSeriesCount() throws IOException {
+    if (reader == null) {
+      printAndFlush(System.out, "Reader null. Could not get series.");
+    }
+    else {
+      printAndFlush(System.out, Integer.toString(reader.getSeriesCount()));
+    }
+    
+    return true;
+  }
+  
   /**
    * Reads image metadata from the given file path, dumping the resultant
    * values to stdout in a specific order (which we have not documented here
@@ -450,7 +471,6 @@ public class SCIFIOITKBridge {
 		  int zStart, int tStart, int cStart, int xCount, int yCount,
 		  int zCount, int tCount, int cCount) throws IOException, FormatException
   {
-    
 	  IMetadata meta = MetadataTools.createOMEXMLMetadata();
     MetadataTools.populateMetadata(meta, 0, fileName, byteOrder == 0, "XYZTC",
         FormatTools.getPixelTypeString(pixelType), dimx, dimy, dimz, dimc * rgbCCount, dimt, rgbCCount);
