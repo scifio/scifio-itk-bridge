@@ -132,7 +132,6 @@ public class SCIFIOITKBridge {
       }
     }
     
-    try {
       if(args[0].equals("info")) {
         success = readImageInfo(id, series);
       }
@@ -202,17 +201,9 @@ public class SCIFIOITKBridge {
             cCount);
       }
       else {
-        throw new Exception("Error: unknown command: " + args[0]);
+        throw new FormatException("Error: unknown command: " + args[0]);
       }
-    } catch (Throwable e) {
-      String stackError = "Caught exception:\n" + e + "\nStack trace:\n";
-      
-      for (StackTraceElement ste : e.getStackTrace())
-        stackError += ste.toString() + "\n";
-      
-      printAndFlush(System.err, stackError);
-      success = false;
-    }
+
     
     if (!success) 
     {
