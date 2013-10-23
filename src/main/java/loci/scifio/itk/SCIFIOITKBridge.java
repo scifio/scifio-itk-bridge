@@ -52,6 +52,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import loci.common.Constants;
+import loci.common.DataTools;
 import loci.formats.FormatException;
 import loci.formats.FormatTools;
 import loci.formats.IFormatReader;
@@ -406,6 +407,7 @@ public class SCIFIOITKBridge {
     BufferedOutputStream out = new BufferedOutputStream(System.out, 100*1024*1024);
     // System.err.println("canDoDirect = "+canDoDirect);
 
+    byte[] pixel = new byte[bpp];
     for( int c=cBegin; c<=cEnd; c++ )
       {
       for( int t=tBegin; t<=tEnd; t++ )
@@ -418,7 +420,8 @@ public class SCIFIOITKBridge {
             xBegin, yBegin, xLen, yLen );
           if( canDoDirect )
             {
-            out.write(image);
+          	Object data = DataTools.makeDataArray(image, bpp, FormatTools.isFloatingPoint(reader.getPixelType()), reader.isLittleEndian());
+            out.write(getBytes(data));
             }
           else
             {
@@ -437,8 +440,10 @@ public class SCIFIOITKBridge {
                     else {
                       index = ((i * yLen + y) * xLen + x) * bpp + b;
                     }
-                    out.write( image[index] );
+                    pixel[b] = image[index];
                     }
+          	Object data = DataTools.makeDataArray(pixel, bpp, FormatTools.isFloatingPoint(reader.getPixelType()), reader.isLittleEndian());
+            out.write(getBytes(data));
                   }
                 }
               }
@@ -453,7 +458,29 @@ public class SCIFIOITKBridge {
     return true;
   }
   
-  /**
+  private byte[] getBytes(Object data) {
+  	if (data instanceof byte[]) {
+  		return (byte[])data;
+  	}
+  	else if (data instanceof short[]) {
+  		return DataTools.shortsToBytes((short[])data, true);
+  	}
+  	else if (data instanceof int[]) {
+  		return DataTools.intsToBytes((int[])data, true);
+  	}
+  	else if (data instanceof long[]) {
+  		return DataTools.longsToBytes((long[])data, true);
+  	}
+  	else if (data instanceof double[]) {
+  		return DataTools.doublesToBytes((double[])data, true);
+  	}
+  	else if (data instanceof float[]) {
+  		return DataTools.floatsToBytes((float[])data, true);
+  	}
+		return null;
+	}
+
+	/**
    * 
    */
   public boolean write ( String fileName, ColorModel cm, int byteOrder, int dims,
