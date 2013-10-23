@@ -53,6 +53,7 @@ import java.util.Set;
 
 import loci.common.Constants;
 import loci.common.DataTools;
+import loci.formats.ChannelFiller;
 import loci.formats.FormatException;
 import loci.formats.FormatTools;
 import loci.formats.IFormatReader;
@@ -596,7 +597,9 @@ public class SCIFIOITKBridge {
     }
     System.err.println("Creating new reader for "+filePath);
     // initialize a fresh reader
-    reader = new ImageReader();
+    ChannelFiller cf =  new ChannelFiller(new ImageReader());
+    cf.setFilled(true);
+    reader = cf;
     readerPath = filePath;
 
     reader.setMetadataFiltered(true);
