@@ -1,7 +1,7 @@
 SCIFIOITKBridge is a class allowing SCIFIO readers and writers to be called
 from ITK.
 
-Copyright (c) 2013, UW-Madison LOCI
+Copyright (c) 2013 - 2014, UW-Madison LOCI
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
