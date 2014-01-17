@@ -1,85 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-    http://maven.apache.org/xsd/maven-v4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+		http://maven.apache.org/xsd/maven-v4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>loci</groupId>
-    <artifactId>pom-loci</artifactId>
-    <version>1.5</version>
-  </parent>
+	<parent>
+		<groupId>loci</groupId>
+		<artifactId>pom-loci</artifactId>
+		<version>1.5</version>
+	</parent>
 
-  <artifactId>scifio-itk-bridge</artifactId>
-  <version>1.0.0</version>
+	<artifactId>scifio-itk-bridge</artifactId>
+	<version>1.0.0</version>
 
-  <name>SCIFIOITKBridge</name>
-  <description>Bridge class allowing SCIFIO readers and writers to be used as ITK ImageIO.</description>
-  <url>http://loci.wisc.edu/software/bio-formats/itk</url>
-  <inceptionYear>2013</inceptionYear>
+	<name>SCIFIOITKBridge</name>
+	<description>Bridge class allowing SCIFIO readers and writers to be used as ITK ImageIO.</description>
+	<url>http://loci.wisc.edu/software/bio-formats/itk</url>
+	<inceptionYear>2013</inceptionYear>
 
-  <licenses>
-    <license>
-      <name>BSD</name>
-      <url>http://github.com/uw-loci//scifio-itk-bridge/blob/master/LICENSE.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
+	<licenses>
+		<license>
+			<name>BSD</name>
+			<url>http://github.com/uw-loci//scifio-itk-bridge/blob/master/LICENSE.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
-  <dependencies>
-    <dependency>
-      <groupId>loci</groupId>
-      <artifactId>bio-formats</artifactId>
-      <version>4.4.9</version>
-    </dependency>
-  </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>loci</groupId>
+			<artifactId>bio-formats</artifactId>
+			<version>4.4.9</version>
+		</dependency>
+	</dependencies>
 
-  <developers>
-    <developer>
-      <id>ctrueden</id>
-      <name>Curtis Rueden</name>
-      <email>ctrueden@wisc.edu</email>
-      <url>http://loci.wisc.edu/people/curtis-rueden</url>
-      <organization>UW-Madison LOCI</organization>
-      <organizationUrl>http://loci.wisc.edu/</organizationUrl>
-      <roles>
-        <role>architect</role>
-        <role>developer</role>
-      </roles>
-      <timezone>-6</timezone>
-    </developer>
-    <developer>
-      <id>hinerm</id>
-      <name>Mark Hiner</name>
-      <email>hiner@wisc.edu</email>
-      <url>http://loci.wisc.edu/people/mark-hiner</url>
-      <organization>UW-Madison LOCI</organization>
-      <organizationUrl>http://loci.wisc.edu/</organizationUrl>
-      <roles>
-        <role>developer</role>
-      </roles>
-      <timezone>-6</timezone>
-    </developer>
-  </developers>
+	<developers>
+		<developer>
+			<id>ctrueden</id>
+			<name>Curtis Rueden</name>
+			<email>ctrueden@wisc.edu</email>
+			<url>http://loci.wisc.edu/people/curtis-rueden</url>
+			<organization>UW-Madison LOCI</organization>
+			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>-6</timezone>
+		</developer>
+		<developer>
+			<id>hinerm</id>
+			<name>Mark Hiner</name>
+			<email>hiner@wisc.edu</email>
+			<url>http://loci.wisc.edu/people/mark-hiner</url>
+			<organization>UW-Madison LOCI</organization>
+			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>-6</timezone>
+		</developer>
+	</developers>
 
-  <scm>
-    <connection>scm:git:git://github.com/uw-loci/scifio-itk-bridge.git</connection>
-    <developerConnection>scm:git:git@github.com:uw-loci/scifio-itk-bridge.git</developerConnection>
-    <tag>HEAD</tag>
-    <url>https://github.com/uw-loci/scifio-itk-bridge</url>
-  </scm>
+	<scm>
+		<connection>scm:git:git://github.com/uw-loci/scifio-itk-bridge.git</connection>
+		<developerConnection>scm:git:git@github.com:uw-loci/scifio-itk-bridge.git</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/uw-loci/scifio-itk-bridge</url>
+	</scm>
 
-  <!-- NB: for project parent, in case of partial checkout -->
-  <repositories>
-    <repository>
-      <id>imagej.releases</id>
-      <url>http://maven.imagej.net/content/repositories/releases</url>
-    </repository>
-    <repository>
-      <id>imagej.snapshots</id>
-      <url>http://maven.imagej.net/content/repositories/snapshots</url>
-    </repository>
-  </repositories>
+	<!-- NB: for project parent, in case of partial checkout -->
+	<repositories>
+		<repository>
+			<id>imagej.releases</id>
+			<url>http://maven.imagej.net/content/repositories/releases</url>
+		</repository>
+		<repository>
+			<id>imagej.snapshots</id>
+			<url>http://maven.imagej.net/content/repositories/snapshots</url>
+		</repository>
+	</repositories>
 
 </project>
