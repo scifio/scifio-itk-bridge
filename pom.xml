@@ -77,8 +77,8 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:git://github.com/uw-loci/scifio-itk-bridge.git</connection>
-		<developerConnection>scm:git:git@github.com:uw-loci/scifio-itk-bridge.git</developerConnection>
+		<connection>scm:git:git://github.com/uw-loci/scifio-itk-bridge</connection>
+		<developerConnection>scm:git:git@github.com:uw-loci/scifio-itk-bridge</developerConnection>
 		<tag>HEAD</tag>
 		<url>https://github.com/uw-loci/scifio-itk-bridge</url>
 	</scm>
