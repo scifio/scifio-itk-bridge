@@ -31,9 +31,20 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>loci</groupId>
+			<groupId>${bio-formats.groupId}</groupId>
+			<artifactId>loci-common</artifactId>
+			<version>${bio-formats.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${bio-formats.groupId}</groupId>
+			<artifactId>scifio</artifactId>
+			<version>${bio-formats.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${bio-formats.groupId}</groupId>
 			<artifactId>bio-formats</artifactId>
-			<version>4.4.9</version>
+			<version>${bio-formats.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 
