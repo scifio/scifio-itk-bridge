@@ -11,8 +11,9 @@
 		<version>1.5</version>
 	</parent>
 
+	<groupId>io.scif</groupId>
 	<artifactId>scifio-itk-bridge</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 
 	<name>SCIFIOITKBridge</name>
 	<description>Bridge class allowing SCIFIO readers and writers to be used as ITK ImageIO.</description>
