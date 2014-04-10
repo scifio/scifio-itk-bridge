@@ -113,7 +113,9 @@ public class SCIFIOITKBridge {
 	{
 		boolean success = false;
 
-		String series = reader == null ? "0" : Integer.toString(reader.getSeries());
+		String series =
+			reader == null || reader.getCurrentFile() == null ? "0" : Integer
+				.toString(reader.getSeries());
 		String id = "";
 		String[] idTokens = null;
 
@@ -587,14 +589,7 @@ public class SCIFIOITKBridge {
 	private IFormatReader createReader(final String filePath)
 		throws FormatException, IOException
 	{
-		if (readerPath == null) {
-			// use the not yet used reader
-			reader.setId(filePath);
-			reader.setSeries(0);
-			return reader;
-		}
-
-		if (readerPath.equals(filePath)) {
+		if (readerPath != null && readerPath.equals(filePath)) {
 			// just use the existing reader
 			return reader;
 		}
