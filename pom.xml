@@ -6,89 +6,56 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.scijava</groupId>
-		<artifactId>pom-scijava</artifactId>
-		<version>1.126</version>
+		<groupId>io.scif</groupId>
+		<artifactId>pom-scifio</artifactId>
+		<version>1.0</version>
 		<relativePath />
 	</parent>
 
-	<groupId>io.scif</groupId>
 	<artifactId>scifio-itk-bridge</artifactId>
 	<version>1.0.1-SNAPSHOT</version>
 
-	<name>SCIFIOITKBridge</name>
+	<name>SCIFIO ITK Bridge</name>
 	<description>Bridge class allowing SCIFIO readers and writers to be used as ITK ImageIO.</description>
-	<url>http://loci.wisc.edu/software/bio-formats/itk</url>
 	<inceptionYear>2013</inceptionYear>
 
-	<licenses>
-		<license>
-			<name>BSD</name>
-			<url>http://github.com/uw-loci//scifio-itk-bridge/blob/master/LICENSE.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-
-	<dependencies>
-		<dependency>
-			<groupId>${bio-formats.groupId}</groupId>
-			<artifactId>loci-common</artifactId>
-			<version>${bio-formats.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${bio-formats.groupId}</groupId>
-			<artifactId>scifio</artifactId>
-			<version>${bio-formats.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${bio-formats.groupId}</groupId>
-			<artifactId>bio-formats</artifactId>
-			<version>${bio-formats.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-	</dependencies>
-
-	<developers>
-		<developer>
-			<id>ctrueden</id>
-			<name>Curtis Rueden</name>
-			<email>ctrueden@wisc.edu</email>
-			<url>http://loci.wisc.edu/people/curtis-rueden</url>
-			<organization>UW-Madison LOCI</organization>
-			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
-			<roles>
-				<role>architect</role>
-				<role>developer</role>
-			</roles>
-			<timezone>-6</timezone>
-		</developer>
-		<developer>
-			<id>hinerm</id>
-			<name>Mark Hiner</name>
-			<email>hiner@wisc.edu</email>
-			<url>http://loci.wisc.edu/people/mark-hiner</url>
-			<organization>UW-Madison LOCI</organization>
-			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
-			<roles>
-				<role>developer</role>
-			</roles>
-			<timezone>-6</timezone>
-		</developer>
-	</developers>
-
 	<scm>
-		<connection>scm:git:git://github.com/uw-loci/scifio-itk-bridge</connection>
-		<developerConnection>scm:git:git@github.com:uw-loci/scifio-itk-bridge</developerConnection>
+		<connection>scm:git:git://github.com/scifio/scifio-itk-bridge</connection>
+		<developerConnection>scm:git:git@github.com:scifio/scifio-itk-bridge</developerConnection>
 		<tag>HEAD</tag>
-		<url>https://github.com/uw-loci/scifio-itk-bridge</url>
+		<url>https://github.com/scifio/scifio-itk-bridge</url>
 	</scm>
 
 	<repositories>
-		<!-- NB: for project parent -->
 		<repository>
 			<id>imagej.public</id>
 			<url>http://maven.imagej.net/content/groups/public</url>
 		</repository>
 	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>ome</groupId>
+			<artifactId>formats-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ome</groupId>
+			<artifactId>formats-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ome</groupId>
+			<artifactId>formats-bsd</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ome</groupId>
+			<artifactId>ome-xml</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>ome</groupId>
+			<artifactId>formats-gpl</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+	</dependencies>
 
 </project>

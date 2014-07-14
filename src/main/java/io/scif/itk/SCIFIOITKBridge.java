@@ -19,7 +19,7 @@
  * #L%
  */
 
-package loci.scifio.itk;
+package io.scif.itk;
 
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
