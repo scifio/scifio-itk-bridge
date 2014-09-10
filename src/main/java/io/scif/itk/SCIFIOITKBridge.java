@@ -38,6 +38,7 @@ import java.util.Set;
 
 import loci.common.Constants;
 import loci.common.DataTools;
+import loci.common.DebugTools;
 import loci.formats.ChannelFiller;
 import loci.formats.FormatException;
 import loci.formats.FormatTools;
@@ -685,6 +686,7 @@ public class SCIFIOITKBridge {
 	// -- Main method --
 
 	public static void main(String[] args) throws FormatException, IOException {
+		DebugTools.enableLogging("OFF");
 		if (!new SCIFIOITKBridge().executeCommand(args)) System.exit(1);
 	}
 }
