@@ -534,15 +534,14 @@ public class SCIFIOITKBridge {
 			fileName + "\n" + cStart + "\n" + cCount + "\n" + tStart + "\n" + tCount +
 			"\n" + zStart + "\n" + zCount + "\n");
 
+		byte[] buf = new byte[bytesPerPlane];
+		BufferedInputStream linein = new BufferedInputStream(System.in);
 		int no = 0;
 		for (int c = cStart; c < cStart + cCount; c++) {
 			for (int t = tStart; t < tStart + tCount; t++) {
 				for (int z = zStart; z < zStart + zCount; z++) {
 
 					int bytesRead = 0;
-
-					byte[] buf = new byte[bytesPerPlane];
-					BufferedInputStream linein = new BufferedInputStream(System.in);
 
 					while (bytesRead < bytesPerPlane) {
 						int read = linein.read(buf, bytesRead, (bytesPerPlane - bytesRead));
@@ -556,6 +555,10 @@ public class SCIFIOITKBridge {
 					}
 
 					writer.saveBytes(no, buf, xStart, yStart, xCount, yCount);
+
+					// Hand-shake with C++, make sure it got the notification that bytes
+					// are done.
+					linein.read(buf);
 					// notify native code that a plane has been saved
 					printAndFlush(System.out, "Plane no: " + no + " saved.\n");
 					no++;
@@ -565,6 +568,9 @@ public class SCIFIOITKBridge {
 
 		if (writer != null) writer.close();
 
+		// Hand-shake with C++, make sure it got the notification that the plane is
+		// done.
+		linein.read(buf);
 		// notify native code the image is complete
 		printAndFlush(System.out, "Done writing image: " + fileName + "\n");
 
