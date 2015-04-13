@@ -56,7 +56,7 @@ import loci.formats.meta.MetadataStore;
  * stdin and issues results on stdout. It is used by the <a
  * href="https://github.com/scifio/scifio-imageio">SCIFIO ImageIO plugin for
  * ITK</a> to read image files.
- * 
+ *
  * @author Mark Hiner
  * @author Curtis Rueden
  */
@@ -88,13 +88,13 @@ public class SCIFIOITKBridge {
 	 * <li>read</li> - Dumps image pixels
 	 * <li>canRead</li> - Tests whether the given file path can be parsed
 	 * </ul>
-	 * 
+	 *
 	 * @throws FormatException
 	 */
-	public boolean executeCommand(String commandLine) throws IOException,
+	public boolean executeCommand(final String commandLine) throws IOException,
 		FormatException
 	{
-		String[] args = commandLine.split("\t");
+		final String[] args = commandLine.split("\t");
 
 		for (int i = 0; i < args.length; i++) {
 			args[i] = args[i].trim();
@@ -103,7 +103,7 @@ public class SCIFIOITKBridge {
 		return executeCommand(args);
 	}
 
-	private boolean executeCommand(String[] args) throws FormatException,
+	private boolean executeCommand(final String[] args) throws FormatException,
 		IOException
 	{
 		boolean success = false;
@@ -134,16 +134,16 @@ public class SCIFIOITKBridge {
 			success = getSeriesCount();
 		}
 		else if (args[0].equals("read")) {
-			int xBegin = Integer.parseInt(args[2]);
-			int xEnd = Integer.parseInt(args[3]) + xBegin - 1;
-			int yBegin = Integer.parseInt(args[4]);
-			int yEnd = Integer.parseInt(args[5]) + yBegin - 1;
-			int zBegin = Integer.parseInt(args[6]);
-			int zEnd = Integer.parseInt(args[7]) + zBegin - 1;
-			int tBegin = Integer.parseInt(args[8]);
-			int tEnd = Integer.parseInt(args[9]) + tBegin - 1;
-			int cBegin = Integer.parseInt(args[10]);
-			int cEnd = Integer.parseInt(args[11]) + cBegin - 1;
+			final int xBegin = Integer.parseInt(args[2]);
+			final int xEnd = Integer.parseInt(args[3]) + xBegin - 1;
+			final int yBegin = Integer.parseInt(args[4]);
+			final int yEnd = Integer.parseInt(args[5]) + yBegin - 1;
+			final int zBegin = Integer.parseInt(args[6]);
+			final int zEnd = Integer.parseInt(args[7]) + zBegin - 1;
+			final int tBegin = Integer.parseInt(args[8]);
+			final int tEnd = Integer.parseInt(args[9]) + tBegin - 1;
+			final int cBegin = Integer.parseInt(args[10]);
+			final int cEnd = Integer.parseInt(args[11]) + cBegin - 1;
 			success =
 				read(id, series, xBegin, xEnd, yBegin, yEnd, zBegin, zEnd, tBegin,
 					tEnd, cBegin, cEnd);
@@ -158,33 +158,33 @@ public class SCIFIOITKBridge {
 			success = waitForInput();
 		}
 		else if (args[0].equals("write")) {
-			int byteOrder = Integer.parseInt(args[2]);
-			int dims = Integer.parseInt(args[3]);
-			int dimx = Integer.parseInt(args[4]);
-			int dimy = Integer.parseInt(args[5]);
-			int dimz = Integer.parseInt(args[6]);
-			int dimt = Integer.parseInt(args[7]);
-			int dimc = Integer.parseInt(args[8]);
-			double pSizeX = Double.parseDouble(args[9]);
-			double pSizeY = Double.parseDouble(args[10]);
-			double pSizeZ = Double.parseDouble(args[11]);
-			double pSizeT = Double.parseDouble(args[12]);
-			double pSizeC = Double.parseDouble(args[13]);
-			int pixelType = Integer.parseInt(args[14]);
-			int rgbCCount = Integer.parseInt(args[15]);
-			int xStart = Integer.parseInt(args[16]);
-			int yStart = Integer.parseInt(args[18]);
-			int zStart = Integer.parseInt(args[20]);
-			int tStart = Integer.parseInt(args[22]);
-			int cStart = Integer.parseInt(args[24]);
-			int xCount = Integer.parseInt(args[17]);
-			int yCount = Integer.parseInt(args[19]);
-			int zCount = Integer.parseInt(args[21]);
-			int tCount = Integer.parseInt(args[23]);
-			int cCount = Integer.parseInt(args[25]);
+			final int byteOrder = Integer.parseInt(args[2]);
+			final int dims = Integer.parseInt(args[3]);
+			final int dimx = Integer.parseInt(args[4]);
+			final int dimy = Integer.parseInt(args[5]);
+			final int dimz = Integer.parseInt(args[6]);
+			final int dimt = Integer.parseInt(args[7]);
+			final int dimc = Integer.parseInt(args[8]);
+			final double pSizeX = Double.parseDouble(args[9]);
+			final double pSizeY = Double.parseDouble(args[10]);
+			final double pSizeZ = Double.parseDouble(args[11]);
+			final double pSizeT = Double.parseDouble(args[12]);
+			final double pSizeC = Double.parseDouble(args[13]);
+			final int pixelType = Integer.parseInt(args[14]);
+			final int rgbCCount = Integer.parseInt(args[15]);
+			final int xStart = Integer.parseInt(args[16]);
+			final int yStart = Integer.parseInt(args[18]);
+			final int zStart = Integer.parseInt(args[20]);
+			final int tStart = Integer.parseInt(args[22]);
+			final int cStart = Integer.parseInt(args[24]);
+			final int xCount = Integer.parseInt(args[17]);
+			final int yCount = Integer.parseInt(args[19]);
+			final int zCount = Integer.parseInt(args[21]);
+			final int tCount = Integer.parseInt(args[23]);
+			final int cCount = Integer.parseInt(args[25]);
 
 			ColorModel cm = null;
-			int useCM = Integer.parseInt(args[26]);
+			final int useCM = Integer.parseInt(args[26]);
 			if (useCM == 1) cm = buildColorModel(args, byteOrder);
 
 			success =
@@ -198,7 +198,7 @@ public class SCIFIOITKBridge {
 
 		if (!success) {
 			String command = "";
-			for (String s : args)
+			for (final String s : args)
 				command += (s + "\t");
 			printAndFlush(System.err, "Command failure:\n" + command + "\n");
 		}
@@ -208,12 +208,12 @@ public class SCIFIOITKBridge {
 
 	/**
 	 * Sets the series of the current reader.
-	 * 
+	 *
 	 * @param series Series index within the current dataset
 	 * @return False if the current reader is null.
 	 */
-	public boolean setSeries(String series) throws IOException {
-		int newSeries = Integer.parseInt(series);
+	public boolean setSeries(final String series) throws IOException {
+		final int newSeries = Integer.parseInt(series);
 		if (reader == null) {
 			printAndFlush(System.out, "Reader null. Could not set series.\n");
 		}
@@ -251,22 +251,22 @@ public class SCIFIOITKBridge {
 	 * Reads image metadata from the given file path, dumping the resultant values
 	 * to stdout in a specific order (which we have not documented here because we
 	 * are lazy).
-	 * 
+	 *
 	 * @param filePath a path to a file on disk, or a hash token for an
 	 *          initialized reader (beginning with "hash:") as given by a call to
 	 *          "info" earlier.
 	 */
-	public boolean readImageInfo(String filePath, String series)
+	public boolean readImageInfo(final String filePath, final String series)
 		throws FormatException, IOException
 	{
 		createReader(filePath);
 
-		int oldSeries = reader.getSeries();
+		final int oldSeries = reader.getSeries();
 		if (!series.equalsIgnoreCase("all")) reader.setSeries(Integer
 			.parseInt(series));
 
 		final MetadataStore store = reader.getMetadataStore();
-		IMetadata meta = (IMetadata) store;
+		final IMetadata meta = (IMetadata) store;
 
 		// now print the informations
 
@@ -278,7 +278,7 @@ public class SCIFIOITKBridge {
 
 		// component type
 		// set ITK component type
-		int pixelType = reader.getPixelType();
+		final int pixelType = reader.getPixelType();
 		sendData("PixelType", String.valueOf(pixelType));
 
 		// x, y, z, t, c
@@ -307,16 +307,16 @@ public class SCIFIOITKBridge {
 				.getPixelsTimeIncrement(0))));
 		sendData("PixelsPhysicalSizeC", String.valueOf(1.0));
 
-		HashMap<String, Object> metadata = new HashMap<String, Object>();
+		final HashMap<String, Object> metadata = new HashMap<String, Object>();
 		metadata.putAll(reader.getGlobalMetadata());
 		metadata.putAll(reader.getSeriesMetadata());
-		Set<Entry<String, Object>> entries = metadata.entrySet();
-		Iterator<Entry<String, Object>> it = entries.iterator();
+		final Set<Entry<String, Object>> entries = metadata.entrySet();
+		final Iterator<Entry<String, Object>> it = entries.iterator();
 
 		while (it.hasNext()) {
-			Entry<String, Object> entry = it.next();
+			final Entry<String, Object> entry = it.next();
 
-			String key = (String) entry.getKey();
+			final String key = entry.getKey();
 			String value = entry.getValue().toString();
 
 			// remove the line return
@@ -330,16 +330,16 @@ public class SCIFIOITKBridge {
 		// population
 		// reader.openPlane(0, 0, 0, 0, 0);
 
-		boolean use16 = reader.get16BitLookupTable() != null;
-		boolean use8 = reader.get8BitLookupTable() != null;
+		final boolean use16 = reader.get16BitLookupTable() != null;
+		final boolean use8 = reader.get8BitLookupTable() != null;
 
 		if (use16 || use8) {
 			printAndFlush(System.err, "Saving color model...\n");
 
 			sendData("UseLUT", String.valueOf(true));
 			sendData("LUTBits", String.valueOf(use8 ? 8 : 16));
-			short[][] lut16 = reader.get16BitLookupTable();
-			byte[][] lut8 = reader.get8BitLookupTable();
+			final short[][] lut16 = reader.get16BitLookupTable();
+			final byte[][] lut8 = reader.get8BitLookupTable();
 
 			sendData("LUTLength", String.valueOf(use8 ? lut8[0].length
 				: lut16[0].length));
@@ -381,7 +381,7 @@ public class SCIFIOITKBridge {
 	/**
 	 * Reads image pixels from the given file path, dumping the resultant binary
 	 * stream to stdout.
-	 * 
+	 *
 	 * @param filePath a path to a file on disk, or a hash token for an
 	 *          initialized reader (beginning with "hash:") as given by a call to
 	 *          "info" earlier. Using a hash token eliminates the need to
@@ -389,37 +389,38 @@ public class SCIFIOITKBridge {
 	 *          Regardless, after reading the file, the reader closes the file
 	 *          handle, and invalidates its hash token.
 	 */
-	public boolean read(String filePath, String series, int xBegin, int xEnd,
-		int yBegin, int yEnd, int zBegin, int zEnd, int tBegin, int tEnd,
-		int cBegin, int cEnd) throws FormatException, IOException
+	public boolean read(final String filePath, final String series,
+		final int xBegin, final int xEnd, final int yBegin, final int yEnd,
+		final int zBegin, final int zEnd, final int tBegin, final int tEnd,
+		final int cBegin, final int cEnd) throws FormatException, IOException
 	{
 		createReader(filePath);
 
-		int oldSeries = reader.getSeries();
+		final int oldSeries = reader.getSeries();
 		if (!series.equalsIgnoreCase("all")) reader.setSeries(Integer
 			.parseInt(series));
 
-		int rgbChannelCount = reader.getRGBChannelCount();
-		int bpp = FormatTools.getBytesPerPixel(reader.getPixelType());
-		int xCount = reader.getSizeX();
-		int yCount = reader.getSizeY();
+		final int rgbChannelCount = reader.getRGBChannelCount();
+		final int bpp = FormatTools.getBytesPerPixel(reader.getPixelType());
+		final int xCount = reader.getSizeX();
+		final int yCount = reader.getSizeY();
 
-		boolean isInterleaved = reader.isInterleaved();
-		boolean canDoDirect =
+		final boolean isInterleaved = reader.isInterleaved();
+		final boolean canDoDirect =
 			xBegin == 0 && yBegin == 0 && xEnd == xCount - 1 && yEnd == yCount - 1 &&
 				rgbChannelCount == 1;
 
-		BufferedOutputStream out =
+		final BufferedOutputStream out =
 			new BufferedOutputStream(System.out, 100 * 1024 * 1024);
 		// System.err.println("canDoDirect = "+canDoDirect);
 
-		byte[] pixel = new byte[bpp];
+		final byte[] pixel = new byte[bpp];
 		byte[] image = null;
 		for (int c = cBegin; c <= cEnd; c++) {
 			for (int t = tBegin; t <= tEnd; t++) {
 				for (int z = zBegin; z <= zEnd; z++) {
-					int xLen = xEnd - xBegin + 1;
-					int yLen = yEnd - yBegin + 1;
+					final int xLen = xEnd - xBegin + 1;
+					final int yLen = yEnd - yBegin + 1;
 					final int no = reader.getIndex(z, c, t);
 					if (image == null) {
 						// allocate a new image buffer
@@ -430,7 +431,7 @@ public class SCIFIOITKBridge {
 						reader.openBytes(no, image, xBegin, yBegin, xLen, yLen);
 					}
 					if (canDoDirect) {
-						Object data =
+						final Object data =
 							DataTools.makeDataArray(image, bpp, FormatTools
 								.isFloatingPoint(reader.getPixelType()), reader
 								.isLittleEndian());
@@ -450,7 +451,7 @@ public class SCIFIOITKBridge {
 										}
 										pixel[b] = image[index];
 									}
-									Object data =
+									final Object data =
 										DataTools.makeDataArray(pixel, bpp, FormatTools
 											.isFloatingPoint(reader.getPixelType()), reader
 											.isLittleEndian());
@@ -469,7 +470,7 @@ public class SCIFIOITKBridge {
 		return true;
 	}
 
-	private byte[] getBytes(Object data) {
+	private byte[] getBytes(final Object data) {
 		if (data instanceof byte[]) {
 			return (byte[]) data;
 		}
@@ -525,14 +526,16 @@ public class SCIFIOITKBridge {
 	 * @throws IOException Thrown if something goes wrong writing the data.
 	 * @throws FormatException Never actually thrown.
 	 */
-	public boolean write(String fileName, ColorModel cm, int byteOrder, int dims,
-		int dimx, int dimy, int dimz, int dimt, int dimc, double pSizeX,
-		double pSizeY, double pSizeZ, double pSizeT, double pSizeC, int pixelType,
-		int rgbCCount, int xStart, int yStart, int zStart, int tStart, int cStart,
-		int xCount, int yCount, int zCount, int tCount, int cCount)
-		throws IOException, FormatException
+	public boolean write(final String fileName, final ColorModel cm,
+		final int byteOrder, final int dims, final int dimx, final int dimy,
+		final int dimz, final int dimt, final int dimc, final double pSizeX,
+		final double pSizeY, final double pSizeZ, final double pSizeT,
+		final double pSizeC, final int pixelType, final int rgbCCount,
+		final int xStart, final int yStart, final int zStart, final int tStart,
+		final int cStart, final int xCount, final int yCount, final int zCount,
+		final int tCount, final int cCount) throws IOException, FormatException
 	{
-		IMetadata meta = MetadataTools.createOMEXMLMetadata();
+		final IMetadata meta = MetadataTools.createOMEXMLMetadata();
 		MetadataTools.populateMetadata(meta, 0, fileName, byteOrder == 0, "XYZTC",
 			FormatTools.getPixelTypeString(pixelType), dimx, dimy, dimz, dimc *
 				rgbCCount, dimt, rgbCCount);
@@ -554,19 +557,21 @@ public class SCIFIOITKBridge {
 		printAndFlush(System.err, "Using writer for format: " + writer.getFormat() +
 			"n");
 
-		int bpp = FormatTools.getBytesPerPixel(pixelType);
+		final int bpp = FormatTools.getBytesPerPixel(pixelType);
 
-		int bytesPerPlane = (xCount - xStart) * (yCount - yStart) * bpp * rgbCCount;
+		final int bytesPerPlane =
+			(xCount - xStart) * (yCount - yStart) * bpp * rgbCCount;
 
-		int numIters = (cCount - cStart) * (tCount - tStart) * (zCount - zStart);
+		final int numIters =
+			(cCount - cStart) * (tCount - tStart) * (zCount - zStart);
 
 		// tell native code how many times to iterate & how big each iteration is
 		printAndFlush(System.out, bytesPerPlane + "\n" + numIters + "\n" +
 			fileName + "\n" + cStart + "\n" + cCount + "\n" + tStart + "\n" + tCount +
 			"\n" + zStart + "\n" + zCount + "\n");
 
-		byte[] buf = new byte[bytesPerPlane];
-		BufferedInputStream linein = new BufferedInputStream(System.in);
+		final byte[] buf = new byte[bytesPerPlane];
+		final BufferedInputStream linein = new BufferedInputStream(System.in);
 		int no = 0;
 		for (int c = cStart; c < cStart + cCount; c++) {
 			for (int t = tStart; t < tStart + tCount; t++) {
@@ -575,8 +580,9 @@ public class SCIFIOITKBridge {
 					int bytesRead = 0;
 
 					while (bytesRead < bytesPerPlane) {
-						int read = linein.read(buf, bytesRead, (bytesPerPlane - bytesRead));
-						bytesRead += (read > 0) ? read : 0;
+						final int read =
+							linein.read(buf, bytesRead, bytesPerPlane - bytesRead);
+						bytesRead += read > 0 ? read : 0;
 						// notify native code that more bytes can be read
 						printAndFlush(System.out, "Bytes read: " +
 							bytesRead +
@@ -609,7 +615,9 @@ public class SCIFIOITKBridge {
 	}
 
 	/** Tests whether the given file path can be parsed by Bio-Formats. */
-	public boolean canRead(String filePath) throws FormatException, IOException {
+	public boolean canRead(final String filePath) throws FormatException,
+		IOException
+	{
 		createReader(null);
 		final boolean canRead = reader.isThisType(filePath);
 		printAndFlush(System.out, String.valueOf(canRead) + "\n");
@@ -624,7 +632,9 @@ public class SCIFIOITKBridge {
 	 * @throws FormatException Never thrown.
 	 * @throws IOException If something goes wrong testing the file.
 	 */
-	public boolean canWrite(String filePath) throws FormatException, IOException {
+	public boolean canWrite(final String filePath) throws FormatException,
+		IOException
+	{
 		writer = new ImageWriter();
 		final boolean canWrite = writer.isThisType(filePath);
 		printAndFlush(System.out, String.valueOf(canWrite) + "\n");
@@ -644,7 +654,7 @@ public class SCIFIOITKBridge {
 		}
 		System.err.println("Creating new reader for " + filePath);
 		// initialize a fresh reader
-		ChannelFiller cf = new ChannelFiller(new ImageReader());
+		final ChannelFiller cf = new ChannelFiller(new ImageReader());
 		cf.setFilled(true);
 		reader = cf;
 		readerPath = filePath;
@@ -674,7 +684,7 @@ public class SCIFIOITKBridge {
 	 * @throws FormatException Never thrown.
 	 * @throws IOException If something goes wrong closing the streams.
 	 */
-	public void exit(int val) throws FormatException, IOException {
+	public void exit(final int val) throws FormatException, IOException {
 		if (reader != null) reader.close();
 		if (writer != null) writer.close();
 		if (in != null) in.close();
@@ -684,32 +694,32 @@ public class SCIFIOITKBridge {
 	/**
 	 * Writes the provided message, appends a newline character and flushes.
 	 */
-	private void printAndFlush(PrintStream stream, String message)
+	private void printAndFlush(final PrintStream stream, final String message)
 		throws IOException
 	{
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
-		writer.write(message + "\n");
-		writer.flush();
+		final BufferedWriter w = new BufferedWriter(new OutputStreamWriter(stream));
+		w.write(message + "\n");
+		w.flush();
 	}
 
 	/**
 	 * Pipes the given key, value pair out to C++
 	 */
-	private void sendData(String key, String value) throws IOException {
+	private void sendData(final String key, String value) throws IOException {
 		if (value != null && value.length() > 0) value = "\n" + value;
 		printAndFlush(System.out, key + value);
 	}
 
-	private ColorModel buildColorModel(String[] args, int byteOrder)
+	private ColorModel buildColorModel(final String[] args, final int byteOrder)
 		throws IOException
 	{
-		int lutBits = Integer.parseInt(args[27]);
-		int lutLength = Integer.parseInt(args[28]);
+		final int lutBits = Integer.parseInt(args[27]);
+		final int lutLength = Integer.parseInt(args[28]);
 
 		ColorModel cm = null;
 
 		if (lutBits == 8) {
-			byte[] r = new byte[lutLength], g = new byte[lutLength], b =
+			final byte[] r = new byte[lutLength], g = new byte[lutLength], b =
 				new byte[lutLength];
 
 			for (int i = 0; i < lutLength; i++) {
@@ -721,7 +731,7 @@ public class SCIFIOITKBridge {
 			cm = new IndexColorModel(lutBits, lutLength, r, g, b);
 		}
 		else if (lutBits == 16) {
-			short[][] lut = new short[3][lutLength];
+			final short[][] lut = new short[3][lutLength];
 
 			for (int i = 0; i < lutLength; i++) {
 				lut[0][i] = Short.parseShort(args[29 + (3 * i)]);
@@ -737,7 +747,9 @@ public class SCIFIOITKBridge {
 
 	// -- Main method --
 
-	public static void main(String[] args) throws FormatException, IOException {
+	public static void main(final String[] args) throws FormatException,
+		IOException
+	{
 		DebugTools.enableLogging("OFF");
 		if (!new SCIFIOITKBridge().executeCommand(args)) System.exit(1);
 	}
