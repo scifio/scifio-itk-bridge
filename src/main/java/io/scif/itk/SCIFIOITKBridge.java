@@ -415,14 +415,21 @@ public class SCIFIOITKBridge {
 		// System.err.println("canDoDirect = "+canDoDirect);
 
 		byte[] pixel = new byte[bpp];
+		byte[] image = null;
 		for (int c = cBegin; c <= cEnd; c++) {
 			for (int t = tBegin; t <= tEnd; t++) {
 				for (int z = zBegin; z <= zEnd; z++) {
 					int xLen = xEnd - xBegin + 1;
 					int yLen = yEnd - yBegin + 1;
-					byte[] image =
-						reader.openBytes(reader.getIndex(z, c, t), xBegin, yBegin, xLen,
-							yLen);
+					final int no = reader.getIndex(z, c, t);
+					if (image == null) {
+						// allocate a new image buffer
+						image = reader.openBytes(no, xBegin, yBegin, xLen, yLen);
+					}
+					else {
+						// reuse the existing image buffer
+						reader.openBytes(no, image, xBegin, yBegin, xLen, yLen);
+					}
 					if (canDoDirect) {
 						Object data =
 							DataTools.makeDataArray(image, bpp, FormatTools
