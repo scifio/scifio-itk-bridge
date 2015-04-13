@@ -232,8 +232,7 @@ public class SCIFIOITKBridge {
 
 	/**
 	 * Pipes the series count of the current reader.
-	 * 
-	 * @param series Series index within the current dataset
+	 *
 	 * @return False if the current reader is null.
 	 */
 	public boolean getSeriesCount() throws IOException {
@@ -493,8 +492,39 @@ public class SCIFIOITKBridge {
 	}
 
 	/**
-   * 
-   */
+	 * Writes data to the given fileName.
+	 * 
+	 * @param fileName
+	 * @param cm
+	 * @param byteOrder
+	 * @param dims
+	 * @param dimx
+	 * @param dimy
+	 * @param dimz
+	 * @param dimt
+	 * @param dimc
+	 * @param pSizeX
+	 * @param pSizeY
+	 * @param pSizeZ
+	 * @param pSizeT
+	 * @param pSizeC
+	 * @param pixelType
+	 * @param rgbCCount
+	 * @param xStart
+	 * @param yStart
+	 * @param zStart
+	 * @param tStart
+	 * @param cStart
+	 * @param xCount
+	 * @param yCount
+	 * @param zCount
+	 * @param tCount
+	 * @param cCount
+	 * @return True if the write succeeded (which is always, unless an exception
+	 *         is thrown).
+	 * @throws IOException Thrown if something goes wrong writing the data.
+	 * @throws FormatException Never actually thrown.
+	 */
 	public boolean write(String fileName, ColorModel cm, int byteOrder, int dims,
 		int dimx, int dimy, int dimz, int dimt, int dimc, double pSizeX,
 		double pSizeY, double pSizeZ, double pSizeT, double pSizeC, int pixelType,
@@ -586,7 +616,14 @@ public class SCIFIOITKBridge {
 		return true;
 	}
 
-	/** Tests whether the given file path can be written by Bio-Formats. */
+	/**
+	 * Tests whether the given file path can be written by Bio-Formats.
+	 *
+	 * @param filePath The file path to test.
+	 * @return True if the file path can be written by Bio-Formats.
+	 * @throws FormatException Never thrown.
+	 * @throws IOException If something goes wrong testing the file.
+	 */
 	public boolean canWrite(String filePath) throws FormatException, IOException {
 		writer = new ImageWriter();
 		final boolean canWrite = writer.isThisType(filePath);
@@ -629,6 +666,14 @@ public class SCIFIOITKBridge {
 		return reader;
 	}
 
+	/**
+	 * Cleans up, closing any active reader and writer streams, then terminates
+	 * the JVM using {@link System#exit(int)} with the given exit code.
+	 * 
+	 * @param val The exit code to use when quitting the Java process.
+	 * @throws FormatException Never thrown.
+	 * @throws IOException If something goes wrong closing the streams.
+	 */
 	public void exit(int val) throws FormatException, IOException {
 		if (reader != null) reader.close();
 		if (writer != null) writer.close();
