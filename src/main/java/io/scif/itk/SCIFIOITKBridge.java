@@ -317,7 +317,7 @@ public class SCIFIOITKBridge {
 		sendData("PixelsPhysicalSizeT", String.valueOf(physSizeT));
 		sendData("PixelsPhysicalSizeC", String.valueOf(physSizeC));
 
-		final HashMap<String, Object> metadata = new HashMap<String, Object>();
+		final HashMap<String, Object> metadata = new HashMap<>();
 		metadata.putAll(reader.getGlobalMetadata());
 		metadata.putAll(reader.getSeriesMetadata());
 		final Set<Entry<String, Object>> entries = metadata.entrySet();
