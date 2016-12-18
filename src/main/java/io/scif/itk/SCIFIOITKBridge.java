@@ -59,6 +59,9 @@ import loci.formats.MetadataTools;
 import loci.formats.gui.Index16ColorModel;
 import loci.formats.meta.IMetadata;
 import loci.formats.meta.MetadataStore;
+import ome.units.UNITS;
+import ome.units.quantity.Length;
+import ome.units.quantity.Time;
 
 /**
  * SCIFIOITKBridge is a Java console application that listens for "commands" on
@@ -301,20 +304,18 @@ public class SCIFIOITKBridge {
 		sendData("RGBChannelCount", String.valueOf(reader.getRGBChannelCount()));
 
 		// spacing
-		// Note: ITK X,Y,Z spacing is mm. Bio-Formats uses um.
-		sendData("PixelsPhysicalSizeX", String.valueOf(((meta
-			.getPixelsPhysicalSizeX(0) == null ? 1.0 : meta.getPixelsPhysicalSizeX(0)
-			.getValue()) / 1000f)));
-		sendData("PixelsPhysicalSizeY", String.valueOf(((meta
-			.getPixelsPhysicalSizeY(0) == null ? 1.0 : meta.getPixelsPhysicalSizeY(0)
-			.getValue()) / 1000f)));
-		sendData("PixelsPhysicalSizeZ", String.valueOf(((meta
-			.getPixelsPhysicalSizeZ(0) == null ? 1.0 : meta.getPixelsPhysicalSizeZ(0)
-			.getValue()) / 1000f)));
-		sendData("PixelsPhysicalSizeT", String
-			.valueOf((meta.getPixelsTimeIncrement(0) == null ? 1.0 : meta
-				.getPixelsTimeIncrement(0))));
-		sendData("PixelsPhysicalSizeC", String.valueOf(1.0));
+		// NB: ITK X,Y,Z spacing is mm.
+		final double physSizeX = mm(meta.getPixelsPhysicalSizeX(0), 1.0);
+		final double physSizeY = mm(meta.getPixelsPhysicalSizeY(0), 1.0);
+		final double physSizeZ = mm(meta.getPixelsPhysicalSizeZ(0), 1.0);
+		final double physSizeT = sec(meta.getPixelsTimeIncrement(0), 1.0);
+		final double physSizeC = 1.0;
+
+		sendData("PixelsPhysicalSizeX", String.valueOf(physSizeX));
+		sendData("PixelsPhysicalSizeY", String.valueOf(physSizeY));
+		sendData("PixelsPhysicalSizeZ", String.valueOf(physSizeZ));
+		sendData("PixelsPhysicalSizeT", String.valueOf(physSizeT));
+		sendData("PixelsPhysicalSizeC", String.valueOf(physSizeC));
 
 		final HashMap<String, Object> metadata = new HashMap<String, Object>();
 		metadata.putAll(reader.getGlobalMetadata());
@@ -752,6 +753,16 @@ public class SCIFIOITKBridge {
 		}
 
 		return cm;
+	}
+
+	private double mm(final Length l, final double defaultValue) {
+		return l != null && l.unit().isConvertible(UNITS.MILLIMETER) ? //
+			l.value(UNITS.MILLIMETER).doubleValue() : defaultValue;
+	}
+
+	private double sec(final Time t, final double defaultValue) {
+		return t != null && t.unit().isConvertible(UNITS.SECOND) ? //
+			t.value(UNITS.SECOND).doubleValue() : defaultValue;
 	}
 
 	// -- Main method --
