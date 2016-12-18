@@ -3,18 +3,30 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>io.scif</groupId>
-		<artifactId>pom-scifio</artifactId>
-		<version>1.4</version>
+		<groupId>org.scijava</groupId>
+		<artifactId>pom-scijava</artifactId>
+		<version>12.0.0</version>
 		<relativePath />
 	</parent>
 
+	<groupId>io.scif</groupId>
 	<artifactId>scifio-itk-bridge</artifactId>
 	<version>1.2.1-SNAPSHOT</version>
 
 	<name>SCIFIO ITK Bridge</name>
 	<description>Bridge class allowing SCIFIO readers and writers to be used as ITK ImageIO.</description>
+	<url>http://imagej.net/SCIFIO_ITK_Bridge</url>
 	<inceptionYear>2013</inceptionYear>
+	<organization>
+		<name>SCIFIO</name>
+		<url>http://scif.io/</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>Simplified BSD License</name>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<developers>
 		<developer>
@@ -40,12 +52,38 @@
 		</contributor>
 	</contributors>
 
+	<mailingLists>
+		<mailingList>
+			<name>ImageJ Forum</name>
+			<archive>http://forum.imagej.net/</archive>
+		</mailingList>
+	</mailingLists>
+
 	<scm>
 		<connection>scm:git:git://github.com/scifio/scifio-itk-bridge</connection>
 		<developerConnection>scm:git:git@github.com:scifio/scifio-itk-bridge</developerConnection>
 		<tag>HEAD</tag>
 		<url>https://github.com/scifio/scifio-itk-bridge</url>
 	</scm>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/scifio/scifio-itk-bridge/issues</url>
+	</issueManagement>
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://jenkins.imagej.net/job/SCIFIO-ITK-bridge/</url>
+	</ciManagement>
+
+	<properties>
+		<package-name>io.scif.itk</package-name>
+		<main-class>io.scif.itk.SCIFIOITKBridge</main-class>
+		<scijava.jvm.version>1.7</scijava.jvm.version>
+		<license.licenseName>bsd_2</license.licenseName>
+		<license.copyrightOwners>Board of Regents of the University of
+Wisconsin-Madison</license.copyrightOwners>
+		<license.projectName>SCIFIO library for reading and converting scientific file formats.</license.projectName>
+		<bio-formats.version>5.0.3</bio-formats.version>
+	</properties>
 
 	<repositories>
 		<repository>
