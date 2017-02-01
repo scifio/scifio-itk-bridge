@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.scijava</groupId>
 		<artifactId>pom-scijava</artifactId>
-		<version>12.0.0</version>
+		<version>13.0.0</version>
 		<relativePath />
 	</parent>
 
@@ -94,10 +94,6 @@ Wisconsin-Madison</license.copyrightOwners>
 	<dependencies>
 		<dependency>
 			<groupId>ome</groupId>
-			<artifactId>formats-common</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>ome</groupId>
 			<artifactId>formats-api</artifactId>
 		</dependency>
 		<dependency>
@@ -105,7 +101,11 @@ Wisconsin-Madison</license.copyrightOwners>
 			<artifactId>formats-bsd</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>ome</groupId>
+			<groupId>org.openmicroscopy</groupId>
+			<artifactId>ome-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openmicroscopy</groupId>
 			<artifactId>ome-xml</artifactId>
 		</dependency>
 
