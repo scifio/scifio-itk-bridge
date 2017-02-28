@@ -70,8 +70,8 @@
 		<url>https://github.com/scifio/scifio-itk-bridge/issues</url>
 	</issueManagement>
 	<ciManagement>
-		<system>Jenkins</system>
-		<url>http://jenkins.imagej.net/job/SCIFIO-ITK-bridge/</url>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/scifio/scifio-itk-bridge</url>
 	</ciManagement>
 
 	<properties>
