@@ -1,6 +1,8 @@
 scifio-itk-bridge
 =================
 
+[![](https://travis-ci.org/scifio/scifio-itk-bridge.svg?branch=master)](https://travis-ci.org/scifio/scifio-itk-bridge)
+
 __NB: This `scifio-itk-bridge` provides the _Java_ side of SCIFIO-ITK integration. For the _C++_ side, see [scifio-imageio](https://github.com/scifio/scifio-imageio).__
 
 Provides a simple bridge class that can be called by an ITK ImageIO (C++) to pipe information to and from SCIFIO-based Readers and Writers (Java).
