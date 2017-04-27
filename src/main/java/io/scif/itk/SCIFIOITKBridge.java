@@ -96,9 +96,9 @@ public class SCIFIOITKBridge {
 	/**
 	 * Executes the given command line. The following commands are supported:
 	 * <ul>
-	 * <li>info</li> - Dumps image metadata
-	 * <li>read</li> - Dumps image pixels
-	 * <li>canRead</li> - Tests whether the given file path can be parsed
+	 * <li>info - Dumps image metadata</li>
+	 * <li>read - Dumps image pixels</li>
+	 * <li>canRead - Tests whether the given file path can be parsed</li>
 	 * </ul>
 	 *
 	 * @throws FormatException
