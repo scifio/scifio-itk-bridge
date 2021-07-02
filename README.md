@@ -1,7 +1,7 @@
 scifio-itk-bridge
 =================
 
-[![](https://travis-ci.org/scifio/scifio-itk-bridge.svg?branch=master)](https://travis-ci.org/scifio/scifio-itk-bridge)
+[![](https://github.com/scifio/scifio-itk-bridge/actions/workflows/build-main.yml/badge.svg)](https://github.com/scifio/scifio-itk-bridge/actions/workflows/build-main.yml)
 
 __NB: This `scifio-itk-bridge` provides the _Java_ side of SCIFIO-ITK integration. For the _C++_ side, see [scifio-imageio](https://github.com/scifio/scifio-imageio).__
 
